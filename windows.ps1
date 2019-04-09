@@ -1,57 +1,38 @@
 # Install chocolatey
 Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
-#Visual Studio
+#Visual Studio and dev tools
 choco install visualstudio-installer -y
-
-#resharper
 choco install resharper-platform -y
-
-# SQL
 choco install sql-server-management-studio -y
-
-# azure tools
 choco install microsoftazurestorageexplorer -y
 choco install azure-functions-core-tools -y
-
-# Docker
 choco install docker-cli -y
 
-# Install vscode
+# Editors
 choco install vscode -y
-
-# Notepadd++
 choco install notepadplusplus -y
 
-# postman
+# Web tools
 choco install postman -y
-
-# fiddler
 choco install fiddler -y
 
 # git
+choco install github-desktop -y
 choco install git -y
-
-# kdiff3
+choco install sourcetree -y
 choco install kdiff3 -y
 
-# teams
-choco install microsoft-teams -y
-
-# node
+# Web dev tools and frameworks
 choco install nodejs -y
-
-# yarn
 choco install yarn -y
 
-# google-backup-and-sync
+# Productivity
+choco install microsoft-teams -y
 choco install google-backup-and-sync -y
-
-# googlechrome
 choco install googlechrome -y
-
-# firefox
 choco install firefox -y
+choco install adobereader -y
 
 # Upgrade
 choco upgrade all -y
