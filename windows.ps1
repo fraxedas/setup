@@ -19,5 +19,14 @@ choco install git -y
 # kdiff3
 choco install kdiff3 -y
 
+# teams
+choco install microsoft-teams -y
+
+# node
+choco install nodejs -y
+
+# yarn
+choco install yarn -y
+
 # Upgrade
 choco upgrade all -y
