@@ -7,6 +7,16 @@ choco install visualstudio-installer -y
 #resharper
 choco install resharper-platform -y
 
+# SQL
+choco install sql-server-management-studio -y
+
+# azure tools
+choco install microsoftazurestorageexplorer -y
+choco install azure-functions-core-tools -y
+
+# Docker
+choco install docker-cli -y
+
 # Install vscode
 choco install vscode -y
 
