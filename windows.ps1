@@ -33,6 +33,7 @@ choco install google-backup-and-sync -y
 choco install googlechrome -y
 choco install firefox -y
 choco install adobereader -y
+choco install irfanview -y
 
 # Upgrade
 choco upgrade all -y
