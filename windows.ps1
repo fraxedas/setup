@@ -8,6 +8,7 @@ choco install sql-server-management-studio -y
 choco install microsoftazurestorageexplorer -y
 choco install azure-functions-core-tools -y
 choco install docker-cli -y
+choco install nugetpackageexplorer -y
 
 # Editors
 choco install vscode -y
