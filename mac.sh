@@ -1,32 +1,46 @@
 #!/bin/bash
 
+function installBrew() {
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    echo 'export PATH="/usr/local/sbin:$PATH"' >> ~/.bash_profile
+}
+
+function binstall() {
+    echo Checking $1
+    brew list $1 >> /dev/null || brew install $1
+}
+
+function cinstall() {
+    echo Checking $1
+    brew cask list $1 >> /dev/null || brew cask install $1
+}
+
 # Install homebrew and cask
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-brew doctor
-brew install caskroom/cask/brew-cask
+brew doctor || installBrew
 
 #Visual Studio and dev tools
-brew cask install visual-studio
-brew cask install microsoft-azure-storage-explorer
-brew cask install visual-studio-code
+cinstall visual-studio
+cinstall microsoft-azure-storage-explorer
+cinstall visual-studio-code
 
 # Web tools
-brew cask install postman
+cinstall postman
 
 # git
-brew cask install github
+cinstall github
 source git-alias.ps1
-brew cask install sourcetree
+cinstall sourcetree
 
 # Web dev tools and frameworks
-brew install nodejs
-brew install yarn
+binstall nodejs
+binstall yarn
+binstall python
 
 # Productivity
-brew cask install microsoft-teams
-brew cask install google-backup-and-sync
-brew cask install google-chrome
-brew cask install firefox
+cinstall microsoft-teams
+cinstall google-backup-and-sync
+cinstall google-chrome
+cinstall firefox
 
 # Upgrade
 brew update
