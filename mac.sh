@@ -16,6 +16,7 @@ brew cask install postman
 # git
 brew cask install github
 source git-alias.ps1
+brew cask install sourcetree
 
 # Web dev tools and frameworks
 brew install nodejs
