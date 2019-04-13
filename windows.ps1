@@ -2,7 +2,7 @@
 Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
 #Visual Studio and dev tools
-choco install visualstudio-installer -y
+choco install visualstudio2019professional -y
 choco install resharper-platform -y
 choco install sql-server-management-studio -y
 choco install microsoftazurestorageexplorer -y
