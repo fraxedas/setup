@@ -3,7 +3,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object
 
 #Visual Studio and dev tools
 choco install visualstudio2019professional -y
-choco install resharper-platform -y
+choco install resharper-ultimate-all /NoCpp /NoTeamCityAddin -y
 choco install sql-server-management-studio -y
 choco install microsoftazurestorageexplorer -y
 choco install azure-functions-core-tools -y
