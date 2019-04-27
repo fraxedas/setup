@@ -22,6 +22,8 @@ brew doctor || installBrew
 cinstall visual-studio
 cinstall microsoft-azure-storage-explorer
 cinstall visual-studio-code
+brew tap azure/functions
+binstall azure-functions-core-tools
 
 # Web tools
 cinstall postman
