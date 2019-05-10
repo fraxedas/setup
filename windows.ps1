@@ -28,6 +28,7 @@ choco install kdiff3 -y
 # Web dev tools and frameworks
 choco install nodejs -y
 choco install yarn -y
+choco install python -y
 
 # Productivity
 choco install microsoft-teams -y
