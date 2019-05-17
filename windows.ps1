@@ -19,11 +19,12 @@ choco install postman -y
 choco install fiddler -y
 
 # git
-choco install github-desktop -y
 choco install git -y
+refreshenv
+./git-alias.ps1
+choco install github-desktop -y
 choco install sourcetree -y
 choco install kdiff3 -y
-./git-alias.ps1
 
 # Web dev tools and frameworks
 choco install nodejs -y
