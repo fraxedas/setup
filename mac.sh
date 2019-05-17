@@ -38,6 +38,9 @@ binstall nodejs
 binstall yarn
 binstall python
 
+#ML
+cinstall anaconda
+
 # Productivity
 cinstall microsoft-teams
 cinstall google-backup-and-sync

@@ -30,6 +30,9 @@ choco install nodejs -y
 choco install yarn -y
 choco install python -y
 
+#ML
+choco install anaconda3 -y --params /AddToPath
+
 # Productivity
 choco install microsoft-teams -y
 choco install google-backup-and-sync -y
