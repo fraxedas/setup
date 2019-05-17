@@ -40,6 +40,7 @@ binstall python
 
 #ML
 cinstall anaconda
+echo 'export PATH="/usr/local/anaconda3/bin:$PATH"' >> ~/.bash_profile
 
 # Productivity
 cinstall microsoft-teams
