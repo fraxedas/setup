@@ -42,6 +42,7 @@ choco install python -y
 
 #ML
 choco install anaconda3 -y --params /AddToPath
+conda install -c pytorch -c fastai fastai
 
 # Productivity
 choco install microsoft-teams -y

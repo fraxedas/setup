@@ -41,6 +41,7 @@ binstall python
 #ML
 cinstall anaconda
 echo 'export PATH="/usr/local/anaconda3/bin:$PATH"' >> ~/.bash_profile
+conda install -c pytorch -c fastai fastai
 
 # Productivity
 cinstall microsoft-teams
