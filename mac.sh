@@ -32,6 +32,7 @@ cinstall postman
 cinstall github
 source git-alias.ps1
 cinstall sourcetree
+cinstall kdiff3
 
 # Web dev tools and frameworks
 binstall nodejs
