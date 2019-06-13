@@ -20,6 +20,7 @@ brew doctor || installBrew
 
 #Visual Studio and dev tools
 cinstall visual-studio
+cinstall dotnet-sdk
 cinstall microsoft-azure-storage-explorer
 cinstall visual-studio-code
 brew tap azure/functions
