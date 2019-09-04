@@ -25,6 +25,7 @@ cinstall microsoft-azure-storage-explorer
 cinstall visual-studio-code
 brew tap azure/functions
 binstall azure-functions-core-tools
+cinstall docker
 
 # Web tools
 cinstall postman
