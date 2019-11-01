@@ -26,6 +26,7 @@ cinstall visual-studio-code
 brew tap azure/functions
 binstall azure-functions-core-tools
 cinstall docker
+cinstall java
 
 # Web tools
 cinstall postman
