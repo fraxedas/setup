@@ -54,6 +54,9 @@ cinstall google-backup-and-sync
 cinstall google-chrome
 cinstall firefox
 
+#Dev tools
+cinstall imagemagick
+
 # Upgrade
 brew update
 brew upgrade
