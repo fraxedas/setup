@@ -1,3 +1,4 @@
+# Add vs exclussion for Windows Defender
 $userPath = $env:USERPROFILE
 $pathExclusions = New-Object System.Collections.ArrayList
 $processExclusions = New-Object System.Collections.ArrayList

@@ -2,14 +2,13 @@
 Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
 #Visual Studio
-choco install visualstudio2019professional -y
+choco install visualstudio2019community -y
 choco install visualstudio2019-workload-azure -y
-choco install visualstudio2019-workload-datascience -y
 choco install visualstudio2019-workload-manageddesktop -y
 choco install visualstudio2019-workload-netcoretools -y
 choco install visualstudio2019-workload-netcrossplat -y
 choco install visualstudio2019-workload-netweb -y
-choco install visualstudio2019-workload-python -y
+choco install visualstudio2019-workload-xamarinbuildtools -y
 
 #Dev tools
 choco install resharper-ultimate-all /NoCpp /NoTeamCityAddin -y
