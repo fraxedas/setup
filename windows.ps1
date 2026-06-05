@@ -1,63 +1,173 @@
-# Install chocolatey
-Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+Set-StrictMode -Version Latest
+$ErrorActionPreference = "Stop"
 
-#Visual Studio
-choco install visualstudio2019community -y
-choco install visualstudio2019-workload-azure -y
-choco install visualstudio2019-workload-manageddesktop -y
-choco install visualstudio2019-workload-netcoretools -y
-choco install visualstudio2019-workload-netcrossplat -y
-choco install visualstudio2019-workload-netweb -y
-choco install visualstudio2019-workload-xamarinbuildtools -y
-choco install visualstudio2019-workload-databuildtools -y
+$NodeVersion = "22"
+$WorkspaceRoot = if ($env:WORKSPACE_ROOT) { $env:WORKSPACE_ROOT } else { Join-Path $HOME "GitHub" }
 
-#Dev tools
-choco install resharper-ultimate-all /NoCpp /NoTeamCityAddin -y
-choco install sql-server-management-studio -y
-choco install microsoftazurestorageexplorer -y
-choco install azure-functions-core-tools -y
-choco install docker-cli -y
-choco install nugetpackageexplorer -y
+function Main {
+    Write-Step "Preparing Windows developer setup"
 
-#AWS tools
-choco install awscli -y
+    Ensure-Administrator
+    Ensure-Winget
 
-# Editors
-choco install vscode -y
-choco install notepadplusplus -y
+    Install-CommandLineTools
+    Install-Node
+    Install-DesktopApps
+    Install-AiTools
+    Install-PlaywrightBrowsers
 
-# Web tools
-choco install postman -y
-choco install fiddler -y
+    Write-Step "Upgrading installed winget packages"
+    winget upgrade --all --accept-package-agreements --accept-source-agreements
 
-# git
-choco install git -y
-refreshenv
-./git-alias.ps1
-choco install github-desktop -y
-choco install sourcetree -y
-choco install kdiff3 -y
+    Write-Step "Done"
+    Write-Host "Open a new terminal, then use: cd ~/GitHub/<repo>/web; npm ci; npm start"
+}
 
-# Web dev tools and frameworks
-choco install nodejs -y
-choco install yarn -y
-choco install python -y
+function Write-Step {
+    param([Parameter(Mandatory)] [string] $Message)
 
-#ML
-#choco install anaconda3 -y --params /AddToPath
-#conda install -c pytorch -c fastai fastai
+    Write-Host ""
+    Write-Host "==> $Message"
+}
 
-# Productivity
-choco install microsoft-teams -y
-choco install google-backup-and-sync -y
-choco install googlechrome -y
-choco install firefox -y
-choco install adobereader -y
-choco install irfanview -y
+function Ensure-Administrator {
+    $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $principal = [Security.Principal.WindowsPrincipal]::new($identity)
 
-#MySQL
-choco install mysql -y
-choco install mysql.workbench -y
+    if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+        throw "Run this script from an elevated PowerShell terminal."
+    }
+}
 
-# Upgrade
-choco upgrade all -y
+function Ensure-Winget {
+    if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+        throw "winget is required. Install App Installer from the Microsoft Store, then rerun this script."
+    }
+}
+
+function Install-WingetPackage {
+    param(
+        [Parameter(Mandatory)] [string] $Id,
+        [Parameter(Mandatory)] [string] $Name
+    )
+
+    $installed = winget list --id $Id --exact --source winget 2>$null
+    if ($LASTEXITCODE -eq 0 -and $installed -match [regex]::Escape($Id)) {
+        Write-Host "Already installed: $Name"
+        return
+    }
+
+    winget install `
+        --id $Id `
+        --exact `
+        --source winget `
+        --accept-package-agreements `
+        --accept-source-agreements
+}
+
+function Install-CommandLineTools {
+    Write-Step "Installing command-line tools"
+    Install-WingetPackage -Id "Git.Git" -Name "Git"
+    Install-WingetPackage -Id "GitHub.cli" -Name "GitHub CLI"
+    Install-WingetPackage -Id "jqlang.jq" -Name "jq"
+    Install-WingetPackage -Id "BurntSushi.ripgrep.MSVC" -Name "ripgrep"
+    Install-WingetPackage -Id "Microsoft.AzureCLI" -Name "Azure CLI"
+    Install-WingetPackage -Id "Microsoft.Bicep" -Name "Bicep"
+}
+
+function Install-Node {
+    Write-Step "Installing Node.js $NodeVersion"
+    Install-WingetPackage -Id "CoreyButler.NVMforWindows" -Name "nvm-windows"
+    Import-CurrentPath
+
+    nvm install $NodeVersion
+    nvm use $NodeVersion
+
+    node --version
+    npm --version
+}
+
+function Install-DesktopApps {
+    Write-Step "Installing desktop apps"
+    Install-WingetPackage -Id "Microsoft.VisualStudioCode" -Name "Visual Studio Code"
+    Install-WingetPackage -Id "Google.Chrome" -Name "Google Chrome"
+    Install-WingetPackage -Id "Mozilla.Firefox" -Name "Firefox"
+    Install-WingetPackage -Id "Microsoft.Azure.StorageExplorer" -Name "Azure Storage Explorer"
+}
+
+function Install-AiTools {
+    Write-Step "Installing AI-assisted development tools"
+    Install-WingetPackage -Id "GitHub.GitHubDesktop" -Name "GitHub Desktop"
+
+    npm install -g @openai/codex
+
+    Install-VsCodeExtension -Extension "GitHub.copilot"
+    Install-VsCodeExtension -Extension "GitHub.copilot-chat"
+    Install-VsCodeExtension -Extension "openai.chatgpt"
+
+    gh --version
+    codex --version
+}
+
+function Install-VsCodeExtension {
+    param([Parameter(Mandatory)] [string] $Extension)
+
+    $codeCommand = Get-Command code -ErrorAction SilentlyContinue
+    if (-not $codeCommand) {
+        $codePath = Join-Path $env:LOCALAPPDATA "Programs\Microsoft VS Code\bin\code.cmd"
+        if (Test-Path $codePath) {
+            & $codePath --install-extension $Extension --force
+            return
+        }
+
+        Write-Host "Skipping VS Code extension $Extension; VS Code command line tool is unavailable."
+        return
+    }
+
+    code --install-extension $Extension --force
+}
+
+function Install-PlaywrightBrowsers {
+    $appDirs = @(
+        Join-Path $WorkspaceRoot "score-keeper\web"
+        Join-Path $WorkspaceRoot "arcade-shooter\web"
+    )
+
+    foreach ($appDir in $appDirs) {
+        $packageJson = Join-Path $appDir "package.json"
+        $nodeModules = Join-Path $appDir "node_modules"
+        $relativePath = Resolve-RelativePath -Path $appDir
+
+        if ((Test-Path $packageJson) -and (Test-Path $nodeModules)) {
+            Write-Step "Installing Playwright browsers for $relativePath"
+            Push-Location $appDir
+            try {
+                npx playwright install
+            }
+            finally {
+                Pop-Location
+            }
+        }
+        elseif (Test-Path $packageJson) {
+            Write-Host "Skipping Playwright browsers for $relativePath; run npm ci there first."
+        }
+    }
+}
+
+function Import-CurrentPath {
+    $machinePath = [Environment]::GetEnvironmentVariable("Path", "Machine")
+    $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+    $env:Path = "$machinePath;$userPath"
+}
+
+function Resolve-RelativePath {
+    param([Parameter(Mandatory)] [string] $Path)
+
+    if ($Path.StartsWith($WorkspaceRoot)) {
+        return $Path.Substring($WorkspaceRoot.Length).TrimStart([char[]]"\/")
+    }
+
+    return $Path
+}
+
+Main
