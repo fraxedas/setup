@@ -22,3 +22,17 @@ These apply to all my sessions, across every repository.
 - Flag design risks, edge cases, and better alternatives — even if I didn't ask.
 - Challenge my assumptions when you see a meaningful problem, not just style differences.
 - If something feels outside your confidence zone, say so and we'll figure it out together.
+
+## Codebase consistency
+* Match the surrounding codebase style, naming, structure, and test patterns.
+* Prefer small, targeted changes over broad rewrites.
+* Do not add new abstractions, dependencies, or patterns without a clear reason.
+* Keep comments consistent with the codebase. If comments are sparse, do not over-comment.
+* Add comments only for non-obvious behavior, tradeoffs, or risky assumptions.
+
+## Query validation
+* For Kusto, SQL, or similar queries, validate syntax and schema before providing the final query when tool access is available.
+* Do not invent tables, columns, joins, or filters.
+* Use safe validation first: small time windows, `take`, `limit`, or equivalent.
+* If validation is not possible, clearly say the query is unvalidated and list the assumptions.
+
